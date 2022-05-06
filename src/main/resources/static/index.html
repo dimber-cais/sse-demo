@@ -1,0 +1,38 @@
+<html lang="en">
+<body>
+<main>
+    <h2>SSE Test</h2>
+    <br>
+    <button onclick="startSse()">Start</button>
+    <button onclick="closeSse()">Close</button>
+    <br>
+    <div id="sse"></div>
+</main>
+</body>
+<script>
+
+  let sse = null;
+
+  function startSse() {
+    sse = new EventSource('http://localhost:8080/sse');
+    sse.onmessage = function (evt) {
+      var el = document.getElementById('sse');
+      el.appendChild(document.createTextNode(evt.data));
+      el.appendChild(document.createElement('br'))
+    };
+    sse.onerror = function() {
+      var el = document.getElementById('sse');
+      el.appendChild(document.createTextNode("ERROR"));
+      el.appendChild(document.createElement('br'))
+    };
+  }
+
+  function closeSse() {
+    sse.close()
+    var el = document.getElementById('sse');
+    el.appendChild(document.createTextNode("CLOSE"));
+    el.appendChild(document.createElement('br'))
+  }
+
+</script>
+</html>
